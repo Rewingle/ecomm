@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole  @default(USER)
+  accounts      Account[]
+
+  address     String?
+  zipCode     String?
+  dateOfBirth DateTime?
+
+  isTwoFactorEnabled    Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  sku         String
+  name        String
+  description String
+  category    String //Category @relation(fields: [categoryId], references: [id])
+  color       String //@relation(fields: [colorId], references: [id])
+  //colorId     String @db.ObjectId
+  price       Float
+  image       String
+  stock       Int
+  sizeIds     String[] @db.ObjectId
+  sizes       Size[]   @relation(fields: [sizeIds], references: [id]) //Size[]
+}
+
+//SKU [XXX] [YYY] [BZZZ]
+// TS-R-A101 TSHIRT RED SERIE A 101
+//TSRA101
+// TSHIRT = TS DRESS = DR PANTS = PT SHOES = SH ACCESORIES = AC BLOUSE = BL JACKET = JK SWEATER = SW 
+// SHORTS = SHRT SKIRT = SKT SUIT = ST COAT = CT LEGGINGS = LG
+// RED = R BLUE = B GREEN = G YELLOW = Y BLACK = BL WHITE = WH
+
+model Category {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  //products Product[]
+}
+
+model Color {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  //products Product[]
+}
+
+model Size {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  stock      Int
+  productIds String[]    @db.ObjectId
+  products   Product[]  @relation(fields: [productIds], references: [id])
+}
+
+model VerificationToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
