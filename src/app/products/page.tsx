@@ -7,4 +7,5 @@ const Products = (props: Props) => {
     <div>Products</div>
   )
 }
+
 export default Products

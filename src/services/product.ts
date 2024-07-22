@@ -1,5 +1,5 @@
-/* import { db } from "@/lib/db";
-import { addProductSchema } from "@/schemas";
+import { db } from "@/lib/db";
+import { ProductSchema } from "@/schemas";
 import * as z from "zod";
 export const getProducts = async () => {
   try {
@@ -11,9 +11,9 @@ export const getProducts = async () => {
   }
 };
 
-export const addProductService = async (product: z.infer<typeof addProductSchema>) => {
+export const addProductService = async (product: z.infer<typeof ProductSchema>) => {
     try{
-        const validatedFields = addProductSchema.safeParse(product);
+        const validatedFields = ProductSchema.safeParse(product);
 
         if (!validatedFields.success) {
             return { error: "Invalid fields!" };
@@ -48,4 +48,4 @@ export const addProductService = async (product: z.infer<typeof addProductSchema
     }catch{
         return { error: "Something went wrong. Please try again later." };
     }
-} */
+}

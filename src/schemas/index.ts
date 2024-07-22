@@ -24,7 +24,7 @@ export const RegisterSchema = z.object({
 });
 
 
-export const addProductSchema = z.object({
+export const ProductSchema = z.object({
   sku: z.string().length(3, { message: '⚠️ SKU must contain 9 characters' }).toUpperCase(), //XXX-YYY-ZZZ
   name: z.string().min(1, {
     message: "⚠️Name is required",

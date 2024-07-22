@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { addProductSchema } from '@/schemas';
+import { ProductSchema } from '@/schemas';
 /* import { DropdownMenu } from '@/components/ui/dropdown-menu'; */
 import { addProduct } from '@/actions/add-product';
 import { categories, categoryNames, colorNames } from '@/app/types';
@@ -34,15 +34,16 @@ const AddProduct = (props: Props) => {
     register,
     handleSubmit,
     watch,
+    reset,
     control,
     formState: { errors },
-  } = useForm<z.infer<typeof addProductSchema>>({
-    resolver: zodResolver(addProductSchema),
+  } = useForm<z.infer<typeof ProductSchema>>({
+    resolver: zodResolver(ProductSchema),
     defaultValues: {
       sku: "",
       name: "",
       description: "",
-      category: categoryNames[0],
+      category: categories[0].name,
       color: colorNames[0],
       price: 0,
       image: "https://cdn.dummyjson.com/products/images/furniture/Knoll%20Saarinen%20Executive%20Conference%20Chair/1.png",
@@ -78,7 +79,7 @@ const AddProduct = (props: Props) => {
   const [categorySKU, setCategorySKU] = useState("")
   const [colorSKU, setColorSKU] = useState("")
 
-  const Total = ({ control }: { control: Control<z.infer<typeof addProductSchema>> }) => {
+  const Total = ({ control }: { control: Control<z.infer<typeof ProductSchema>> }) => {
     const formValues = useWatch({
       name: "sizes",
       control
@@ -89,7 +90,7 @@ const AddProduct = (props: Props) => {
     );
     return <p className='italic'>Total Amount: {total}</p>;
   };
-  const onSubmit = (values: z.infer<typeof addProductSchema>) => {
+  const onSubmit = (values: z.infer<typeof ProductSchema>) => {
 
     setError("");
     setSuccess("");
@@ -100,8 +101,10 @@ const AddProduct = (props: Props) => {
         .then((data) => {
           if (data?.error) {
             //form.reset();
+            reset();
             setError(data.error);
           }
+          alert(data)
         })
         .catch(() => {
           setError("Something went wrong. Please try again later.");

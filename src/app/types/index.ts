@@ -14,18 +14,18 @@ export const categories = [
 ] as const
 
 export const categoryNames = [
-    "👕 Tshirt",
-    "👔 Shirt",
-    "👖 Pants",
-    "👟 Shoes",
-    "🧥 Hoodie",
-    "🧥 Jacket",
-    "🩳 Shorts",
-    "🧶 Sweater",
-    "🧦 Socks",
-    "🩲 Underwear",
-    "🎀 Accessories",
-    "🔶 Other",
+    "Tshirt",
+    "Shirt",
+    "Pants",
+    "Shoes",
+    "Hoodie",
+    "Jacket",
+    "Shorts",
+    "Sweater",
+    "Socks",
+    "Underwear",
+    "Accessories",
+    "Other",
 ] as const
 
 export const colors = [
