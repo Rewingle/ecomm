@@ -62,6 +62,7 @@ export const addProductSchema = z.object({
 
 
 export const ProductSchema = z.object({
+
   sku: z.string().length(11).toUpperCase(), //XXX-YYY-ZZZ
   name: z.string().min(1).max(40),
   description: z.string().min(1).max(200),
@@ -76,7 +77,7 @@ export const ProductSchema = z.object({
   stock: z.coerce.number().min(1),
   sizes: z.array(z.object({
     name: z.string().or(z.literal("XS")).or(z.literal("S")).or(z.literal("M")).or(z.literal("L")).or(z.literal("XL")).or(z.literal("XXL")),
-    stock: z.number().min(0, {
+    stock: z.string().min(0, {
       message: "⚠️Stock is required",
     }),
   }))
