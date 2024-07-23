@@ -6,6 +6,7 @@ import { useForm, useFieldArray, useWatch, Control, Controller } from "react-hoo
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from 'zod';
 import { useState, useTransition } from 'react';
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -23,6 +24,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from '@/components/ui/button';
 import { FormSuccess } from '@/components/form-success';
 import { Label } from '@radix-ui/react-label';
+
 
 type Props = {}
 
@@ -74,7 +76,6 @@ const AddProduct = (props: Props) => {
 
   React.useEffect(() => {
     const selectedCategory = watch("category");
-
     const SKU = categories[categories.findIndex(category => category.name === selectedCategory)].sku;
     setCategorySKU(SKU)
   }, [watch("category")])
@@ -122,10 +123,12 @@ const AddProduct = (props: Props) => {
             //form.reset();
             reset();
             setError(data.error);
+            toast.error("Error");
           }
-          alert(data)
+          toast.success("Successfully Added");
         })
         .catch(() => {
+          toast.error("Error");
           setError("Something went wrong. Please try again later.");
         });
     });
@@ -249,6 +252,7 @@ const AddProduct = (props: Props) => {
           <div>
             <Button className='w-full' type='submit'>SUBMIT</Button>
           </div>
+          <FormSuccess></FormSuccess>
         </form>
 
       </CardContent>
