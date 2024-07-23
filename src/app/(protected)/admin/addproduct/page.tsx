@@ -51,7 +51,7 @@ const AddProduct = (props: Props) => {
       category: categories[0].name,
       color: colors[0].name,
       price: 0,
-      image: "https://cdn.dummyjson.com/products/images/furniture/Knoll%20Saarinen%20Executive%20Conference%20Chair/1.png",
+      image: "https://dummyjson.com/icon/abce23/32",
    
       sizes: [{
         name: "XS", stock: 0,

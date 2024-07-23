@@ -52,9 +52,7 @@ const AdminPage = () => {
           <Button onClick={onServerActionClick}>Click to test</Button>
         </div>
       </CardContent>
-      <div className="flex justify-center items-center py-2">
-        <Link href='/admin/addproduct'><Button>ADD TO PRODUCT</Button></Link>
-      </div>
+    
     </Card>
   );
 };

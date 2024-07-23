@@ -59,7 +59,15 @@ export const addProductSchema = z.object({
     }),
   }))
 });
-
+/* 
+VALIDFIELD: 
+{"success":false,"error":{"issues":[{"code":"invalid_type","expected":"string","received":"number","path":["sizes",0,"stock"],"message":"Expected string, 
+received number"},{"code":"invalid_type","expected":"string","received":"number","path":["sizes",1,"stock"],"message":"Expected string, received number"},
+{"code":"invalid_type","expected":"string","received":"number","path":["sizes",2,"stock"],"message":"Expected string, received number"},{"code":"invalid_type",
+"expected":"string","received":"number","path":["sizes",3,"stock"],"message":"Expected string, received number"},{"code":"invalid_type","expected":"string",
+"received":"number","path":["sizes",4,"stock"],"message":"Expected string, received number"}],"name":"ZodError"}}
+INVAAA
+*/
 
 export const ProductSchema = z.object({
 
@@ -77,7 +85,7 @@ export const ProductSchema = z.object({
   stock: z.coerce.number().min(1),
   sizes: z.array(z.object({
     name: z.string().or(z.literal("XS")).or(z.literal("S")).or(z.literal("M")).or(z.literal("L")).or(z.literal("XL")).or(z.literal("XXL")),
-    stock: z.string().min(0, {
+    stock: z.number().min(0, {
       message: "⚠️Stock is required",
     }),
   }))
