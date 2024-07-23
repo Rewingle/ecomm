@@ -6,10 +6,8 @@ import { db } from "@/lib/db";
 
 export const getProduct = async (pagination: Number) => {
 
-
-   
     const addProductResult = await db.product.findMany();
     console.log(addProductResult);
     //product -> addproduct SERVICE
-    return { success: "Product added!" };
+    return addProductResult;
 }

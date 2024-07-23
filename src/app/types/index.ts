@@ -29,22 +29,22 @@ export const categoryNames = [
 ] as const
 
 export const colors = [
-    {name: "🖤 Black", sku: "BLK"},
-    {name: "⚪️ White", sku: "WHT"},
-    {name: "❤️ Red", sku: "RED"},
-    {name: "💙 Blue", sku: "BLU"},
-    {name: "💚 Green", sku: "GRN"},
-    {name: "💛 Yellow", sku: "YEL"},
-    {name: "🧡 Orange", sku: "ORG"},
-    {name: "💜 Purple", sku: "PUR"},
-    {name: "💗 Pink", sku: "PNK"},
-    {name: "🟤 Brown", sku: "BRN"},
-    {name: "🔘 Grey", sku: "GRY"},
-    {name: "🟫 Beige", sku: "BEI"},
-    {name: "🌈 Mixed", sku: "MIX"},
+    {name: "Black", sku: "BLK"},
+    {name: "White", sku: "WHT"},
+    {name: "Red", sku: "RED"},
+    {name: "Blue", sku: "BLU"},
+    {name: "Green", sku: "GRN"},
+    {name: "Yellow", sku: "YEL"},
+    {name: "Orange", sku: "ORG"},
+    {name: "Purple", sku: "PUR"},
+    {name: "Pink", sku: "PNK"},
+    {name: "Brown", sku: "BRN"},
+    {name: "Grey", sku: "GRY"},
+    {name: "Beige", sku: "BEI"},
+    {name: "Mixed", sku: "MIX"},
 ] as const
 
-export const colorNames = [
+/* export const colorNames = [
     "🖤 Black",
     "⚪️ White",
     "❤️ Red",
@@ -59,3 +59,4 @@ export const colorNames = [
     "🟫 Beige",
     "🌈 Mixed",
 ] as const
+ */

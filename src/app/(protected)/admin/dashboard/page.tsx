@@ -34,7 +34,7 @@ const onApiRouteClick = () => {
         }
     });
 };
-const Manage = (props: Props) => {
+const Dashboard = (props: Props) => {
     return (
         <Card className="w-[600px]">
             <CardHeader>
@@ -61,5 +61,5 @@ const Manage = (props: Props) => {
     )
 }
 
-export default Manage
+export default Dashboard
 

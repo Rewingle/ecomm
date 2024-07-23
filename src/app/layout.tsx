@@ -26,11 +26,10 @@ export default async function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <Toaster />
-          <NavBar></NavBar>
+          {/*        <NavBar></NavBar> */}
 
-          <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-gray-200">
-            {children}
-          </div>
+          {children}
+
         </body>
       </html>
     </SessionProvider>

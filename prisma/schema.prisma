@@ -63,8 +63,7 @@ model Product {
   price       Float
   image       String
   stock       Int
-  sizeIds     String[] @db.ObjectId
-  sizes       Size[]   @relation(fields: [sizeIds], references: [id]) //Size[]
+  sizes       Json[]   //Size[]
 }
 
 //SKU [XXX] [YYY] [BZZZ]
@@ -84,14 +83,6 @@ model Color {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   //products Product[]
-}
-
-model Size {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  stock      Int
-  productIds String[]    @db.ObjectId
-  products   Product[]  @relation(fields: [productIds], references: [id])
 }
 
 model VerificationToken {

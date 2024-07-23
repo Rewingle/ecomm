@@ -1,6 +1,6 @@
 import { UserRole } from "@prisma/client";
 import * as z from "zod";
-import { categoryNames, colorNames } from "@/app/types";
+import { categories, colors } from "@/app/types";
 export const LoginSchema = z.object({
   email: z.string().email({
     message: "⚠️Email is required",
@@ -22,10 +22,11 @@ export const RegisterSchema = z.object({
     message: "⚠️Name is required",
   }),
 });
+const colorNames: [string, ...string[]] = ["", ...colors.map(color => color.name)];
+const categoryNames: [string, ...string[]] = ["", ...categories.map(category => category.name)];
 
-
-export const ProductSchema = z.object({
-  sku: z.string().length(3, { message: '⚠️ SKU must contain 9 characters' }).toUpperCase(), //XXX-YYY-ZZZ
+export const addProductSchema = z.object({
+  collection_sku: z.string().length(3, { message: '⚠️ collection_sku must contain 3 characters' }).toUpperCase(), //XXX-YYY-ZZZ
   name: z.string().min(1, {
     message: "⚠️Name is required",
   }).max(40, { message: "Name can't be longer than 40 characters" })
@@ -38,6 +39,7 @@ export const ProductSchema = z.object({
   category: z.enum(categoryNames, {
     errorMap: (issue, ctx) => ({ message: '⚠️Invalid' })
   }),
+
   color: z.enum(colorNames, {
     errorMap: (issue, ctx) => ({ message: '⚠️Invalid' })
   }),
@@ -47,9 +49,31 @@ export const ProductSchema = z.object({
   image: z.string().min(1, {
     message: "⚠️Image is required",
   }),
-  stock: z.coerce.number().min(1, {
+   /* stock: z.coerce.number().min(1, {
     message: "⚠️Stock mus't be at least 1",
+  }),  */
+  sizes: z.array(z.object({
+    name: z.string().or(z.literal("XS")).or(z.literal("S")).or(z.literal("M")).or(z.literal("L")).or(z.literal("XL")).or(z.literal("XXL")),
+    stock: z.number().min(0, {
+      message: "⚠️Stock is required",
+    }),
+  }))
+});
+
+
+export const ProductSchema = z.object({
+  sku: z.string().length(11).toUpperCase(), //XXX-YYY-ZZZ
+  name: z.string().min(1).max(40),
+  description: z.string().min(1).max(200),
+  category: z.enum(categoryNames, {
+    errorMap: (issue, ctx) => ({ message: '⚠️Invalid' })
   }),
+  color: z.enum(colorNames, {
+    errorMap: (issue, ctx) => ({ message: '⚠️Invalid' })
+  }),
+  price: z.coerce.number().min(1),
+  image: z.string().min(1),
+  stock: z.coerce.number().min(1),
   sizes: z.array(z.object({
     name: z.string().or(z.literal("XS")).or(z.literal("S")).or(z.literal("M")).or(z.literal("L")).or(z.literal("XL")).or(z.literal("XXL")),
     stock: z.number().min(0, {

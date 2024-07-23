@@ -42,7 +42,7 @@ const UserButton = () => {
                     <Link href={'/profile'}>👤 Profile</Link>
                 </DropdownMenuItem>
                 {role === 'ADMIN' ? <DropdownMenuItem className='hover:cursor-pointer'>
-                    <Link href={'/admin/manage'}>🛠️ Manage</Link>
+                    <Link href={'/admin/dashboard'}>🛠️ Dashboard</Link>
                 </DropdownMenuItem> : null}
                 <DropdownMenuItem className='hover:cursor-pointer'>
                     <Link href={'/settings'}>⚙️ Settings</Link>
