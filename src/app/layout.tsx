@@ -26,10 +26,12 @@ export default async function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <Toaster />
-{/*           <NavBar></NavBar>
- */}
-          {children}
+          <NavBar></NavBar>
+          <main className="h-full w-full md:px-44 lg:px-52 py-12 bg-gray-100">
 
+            {children}
+
+          </main>
         </body>
       </html>
     </SessionProvider>

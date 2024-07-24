@@ -3,6 +3,8 @@ import { Poppins } from "next/font/google";
 import { LoginButton } from "@/components/auth/login-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { categories } from "./types";
+import { Card } from "@/components/ui/card";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -11,25 +13,24 @@ const font = Poppins({
 
 export default function Home() {
   return (
-    <main className="flex h-full flex-col items-center justify-center bg-gray-900">
-      <div className="space-y-6 text-center">
-        <h1
-          className={cn(
-            "text-6xl font-semibold text-white drop-shadow-md",
-            font.className
-          )}
-        >
-          🔐 Auth
-        </h1>
-        <p className="text-white text-lg">E commerce App</p>
-        <div>
-          <LoginButton asChild>
-            <Button variant="secondary" size="lg">
-              Sign in
-            </Button>
-          </LoginButton>
-        </div>
+    <div>
+      <div className="bg-red-300 w-full h-32">
+
       </div>
-    </main>
+      <br />
+      <Card className="w-full h-12">
+        <div className="flex items-center justify-center h-full w-full">
+          <div className="flex justify-between w-full px-4">
+            {categories.map((category) => (
+              <span>{category.name}</span>
+            ))}
+          </div>
+        </div>
+      </Card>
+      <LoginButton>
+        <Button>LOGIN</Button>
+      </LoginButton>
+
+    </div>
   );
 }
