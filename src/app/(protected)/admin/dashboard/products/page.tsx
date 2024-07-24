@@ -178,8 +178,8 @@ const columns: ColumnDef<Product>[] = [
                             Copy payment ID
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className='hover:cursor-pointer'><CircleMinus className='w-4 h-4 mr-2'/> De-Activate </DropdownMenuItem>
-                        <DropdownMenuItem className='hover:cursor-pointer'><Trash2  className='w-4 h-4 mr-2'/> Remove </DropdownMenuItem>
+                        <DropdownMenuItem className='hover:cursor-pointer'><CircleMinus className='w-4 h-4 mr-2' /> De-Activate </DropdownMenuItem>
+                        <DropdownMenuItem className='hover:cursor-pointer'><Trash2 className='w-4 h-4 mr-2' /> Remove </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
@@ -230,7 +230,7 @@ const ProductsDashboard = () => {
 
     return (
         <div>
-            <Button>ADD PRODUCT</Button>
+            <Link href={'/admin/addproduct'}> <Button>ADD PRODUCT</Button> </Link>
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter products..."

@@ -64,32 +64,15 @@ const Navbar: React.FC<NavbarProps> = () => {
     return (
         <nav className='h-16 w-full bg-white flex justify-center'>
             <div className='w-full px-4 md:p-0 md:w-3/4 h-full flex'>
-                <div className='h-full w-2/5 grid grid-cols-6'>
+                <div className='h-full w-2/5 grid grid-cols-10'>
                     <div className='h-full col-span-2 justify-center items-center flex'>
                         {logoSVG}
                     </div>
-                    <div className='hidden md:flex size-full justify-between items-center px-8 font-semibold col-span-4'>
-                        <span><Link href={'/'}>Home</Link></span>
-                        <span><Link href={'/products'}>Products</Link></span>
-                        <span><Link href={'/test'}>Test</Link></span>
-                        <Button
-                            asChild
-                            variant={pathname === "/server" ? "default" : "outline"}
-                        >
-                            <Link href="/server">Server</Link>
-                        </Button>
-                        <Button
-                            asChild
-                            variant={pathname === "/client" ? "default" : "outline"}
-                        >
-                            <Link href="/client">Client</Link>
-                        </Button>
-                        <Button
-                            asChild
-                            variant={pathname === "/settings" ? "default" : "outline"}
-                        >
-                            <Link href="/settings">Settings</Link>
-                        </Button>
+                    <div className='hidden md:flex size-full justify-between items-center px-8 font-semibold col-span-8'>
+                    <Link href={'/'}><span className='hover:cursor-pointer h-full w-full'>Home</span></Link>
+                    <Link href={'/products'}><span className='hover:cursor-pointer h-full w-full'>Products</span></Link>
+                    <Link href={'/test'}><span className='hover:cursor-pointer h-full w-full'>Test</span></Link>
+                   
                     </div>
 
                 </div>

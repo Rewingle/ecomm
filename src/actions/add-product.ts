@@ -18,7 +18,8 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
         price: product.price,
         image: product.image,
         stock: _stock,
-        sizes: product.sizes
+        sizes: product.sizes,
+        isActive: true
     };
     console.log('STOCK' + _stock)
     console.log('SKU' + _sku)
@@ -30,20 +31,8 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
     if (!validatedFields.success) {
         console.log('INVAAA')
         return { error: "Invalid fields!" };
-    }
-    const {
-        sku,
-        name,
-        description,
-        category,
-        color,
-        price,
-        image,
-        stock,
-        sizes } = validatedFields.data;
-
-    const addProductResult = await db.product.create({
-        data: {
+    } else {
+        const {
             sku,
             name,
             description,
@@ -53,10 +42,25 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
             image,
             stock,
             sizes,
-            isActive: true
-        }
-    });
-    console.log(addProductResult);
-    //product -> addproduct SERVICE
-    return { success: "Product added!" };
+            isActive } = validatedFields.data;
+
+        const addProductResult = await db.product.create({
+            data: {
+                sku,
+                name,
+                description,
+                category,
+                color,
+                price,
+                image,
+                stock,
+                sizes,
+                isActive,
+            }
+        });
+        console.log(addProductResult);
+        //product -> addproduct SERVICE
+        return { success: "Product added!" };
+    }
+
 }
