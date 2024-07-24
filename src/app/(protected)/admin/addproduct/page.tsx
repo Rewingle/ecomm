@@ -1,5 +1,5 @@
 "use client"
-import React, { startTransition } from 'react'
+import React from 'react'
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 import { useForm, useFieldArray, useWatch, Control, Controller } from "react-hook-form";
@@ -16,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
 import { addProductSchema } from '@/schemas';
 import { addProduct } from '@/actions/add-product';
 import { categories, colors } from '@/app/types';
@@ -86,10 +85,6 @@ const AddProduct = (props: Props) => {
     setColorSKU(SKU)
   }, [watch("color")])
 
-  React.useEffect(() => {
-
-  },[categorySKU, colorSKU])
-
 
   const { fields } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormProvider)
@@ -120,7 +115,7 @@ const AddProduct = (props: Props) => {
       addProduct(values)
         .then((data) => {
           if (data?.error) {
-            //form.reset();
+
             reset();
             setError(data.error);
             toast.error("Error");
@@ -133,6 +128,7 @@ const AddProduct = (props: Props) => {
         });
     });
   }
+
   return (
     <Card className='w-full md:w-fit p-6 max-w-lg'>
       <CardHeader>
@@ -211,6 +207,7 @@ const AddProduct = (props: Props) => {
           <br />
           <div className='w-full grid grid-cols-12 italic'>
             <div className='col-span-2 flex items-center'>  SKU: </div>
+
             <div className='col-span-1 flex items-center'> {categorySKU ? categorySKU : 'XXX'}</div>
             <div className='col-span-1 text-2xl flex items-center justify-center'>-</div>
             

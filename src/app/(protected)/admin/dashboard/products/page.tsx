@@ -19,7 +19,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Trash2, CircleMinus } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -56,7 +56,7 @@ export type Product = {
     image: string
     stock: number
     sizes: { name: string; stock: number }[]
-  
+
 }
 
 const columns: ColumnDef<Product>[] = [
@@ -125,24 +125,35 @@ const columns: ColumnDef<Product>[] = [
                 currency: "USD",
             }).format(amount)
 
-            return <div className="text-right font-medium">{formatted}</div>
+            return <div className="text-center font-medium">{formatted}</div>
         },
-        
+
     },
     {
         accessorKey: "image",
         header: () => <div className="text-right">Image</div>,
         cell: ({ row }) => {
 
-            return <img className="size-8" src={(row.getValue("image"))}></img>
+            return <img className="size-8 flex items-center justify-center" src={(row.getValue("image"))}></img>
         },
     },
     {
         accessorKey: "stock",
-        header: () => <div className="text-right">Stock</div>,
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Stock
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+
         cell: ({ row }) => {
 
-            return <div className="lowercase">{row.getValue("stock")}</div>
+            return <div className="lowercase text-center">{row.getValue("stock")}</div>
         },
     },
     {
@@ -160,15 +171,15 @@ const columns: ColumnDef<Product>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuLabel>{row.getValue("name")}</DropdownMenuLabel>
                         <DropdownMenuItem
                             onClick={() => navigator.clipboard.writeText(payment.id)}
                         >
                             Copy payment ID
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <DropdownMenuItem className='hover:cursor-pointer'><CircleMinus className='w-4 h-4 mr-2'/> De-Activate </DropdownMenuItem>
+                        <DropdownMenuItem className='hover:cursor-pointer'><Trash2  className='w-4 h-4 mr-2'/> Remove </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
@@ -219,9 +230,10 @@ const ProductsDashboard = () => {
 
     return (
         <div>
+            <Button>ADD PRODUCT</Button>
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter emails..."
+                    placeholder="Filter products..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
@@ -298,7 +310,7 @@ const ProductsDashboard = () => {
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    Loading...
                                 </TableCell>
                             </TableRow>
                         )}
@@ -329,7 +341,7 @@ const ProductsDashboard = () => {
                     </Button>
                 </div>
             </div>
-          
+
         </div>
     )
 }

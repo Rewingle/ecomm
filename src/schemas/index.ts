@@ -88,7 +88,8 @@ export const ProductSchema = z.object({
     stock: z.number().min(0, {
       message: "⚠️Stock is required",
     }),
-  }))
+  })),
+  isActive: z.boolean(),
 });
 
 export const ResetSchema = z.object({

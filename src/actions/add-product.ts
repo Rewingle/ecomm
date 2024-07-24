@@ -52,7 +52,8 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
             price,
             image,
             stock,
-            sizes
+            sizes,
+            isActive: true
         }
     });
     console.log(addProductResult);

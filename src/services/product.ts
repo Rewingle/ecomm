@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { ProductSchema } from "@/schemas";
 import * as z from "zod";
-export const getProducts = async () => {
+/* export const getProducts = async () => {
   try {
     const products = await db.product.findMany();
 
@@ -11,7 +11,22 @@ export const getProducts = async () => {
   }
 };
 
-export const addProductService = async (product: z.infer<typeof ProductSchema>) => {
+export const getProductById = async (id: string) => {
+    try {
+        const product = await db.product.findUnique({
+        where: {
+            id,
+        },
+        });
+    
+        return product;
+    } catch {
+        return null;
+    }
+    
+}
+ */
+/* export const addProductService = async (product: z.infer<typeof ProductSchema>) => {
     try{
         const validatedFields = ProductSchema.safeParse(product);
 
@@ -39,7 +54,8 @@ export const addProductService = async (product: z.infer<typeof ProductSchema>) 
                     price,
                     image,
                     stock,
-                    sizes
+                    sizes,
+                    isActive: true
                 }
             })
             console.log(createProduct)
@@ -48,4 +64,4 @@ export const addProductService = async (product: z.infer<typeof ProductSchema>) 
     }catch{
         return { error: "Something went wrong. Please try again later." };
     }
-}
+} */

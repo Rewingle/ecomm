@@ -63,7 +63,8 @@ model Product {
   price       Float
   image       String
   stock       Int
-  sizes       Json[]   //Size[]
+  sizes       Json[]
+  isActive    Boolean   //Size[]
 }
 
 model Category {
