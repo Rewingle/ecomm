@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 interface ProductCardType {
+    id: string,
     name: string
     price: number
     image: string
@@ -27,10 +28,10 @@ interface ProductCardType {
 }
  */
 const ProductCard = (props: ProductCardType) => {
-    const { name, image, price, rating } = props
+    const { id, name, image, price, rating } = props
     return (
-        <Link href={'/product/12345'}>
-            <div className='w-full h-82 hover:cursor-pointer'>
+        <Link href={'/product/' + id}>
+            <div className='w-full h-82 hover:cursor-pointer hover:bg-slate-50'>
                 <div className='h-4/5 w-full'>
                     <Image src={image} alt={name} width={128} height={256} className='w-full h-full' />
                 </div>

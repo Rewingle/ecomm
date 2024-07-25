@@ -33,7 +33,7 @@ export default async function Home() {
       <br />
       <div className="grid grid-cols-4 gap-4">
         {featuredProducts.map((product) => (
-          <ProductCard key={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
+          <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
         ))}
       </div>
       <br />
@@ -43,7 +43,7 @@ export default async function Home() {
 
         {
           allProducts.map((product) => (
-            <ProductCard key={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
+            <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
           ))
         }
       </div>
