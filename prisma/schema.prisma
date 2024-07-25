@@ -64,6 +64,7 @@ model Product {
   image       String
   stock       Int
   sizes       Json[]
+  featured    Boolean
   isActive    Boolean   //Size[]
 }
 

@@ -89,6 +89,7 @@ export const ProductSchema = z.object({
       message: "⚠️Stock is required",
     }),
   })),
+  featured: z.boolean(),
   isActive: z.boolean(),
 });
 

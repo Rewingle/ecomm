@@ -27,7 +27,7 @@ export default async function RootLayout({
         <body className={inter.className}>
           <Toaster />
           <NavBar></NavBar>
-          <main className="h-full w-full md:px-44 lg:px-52 py-12 bg-gray-100">
+          <main className="h-full w-full md:px-44 lg:px-52 py-12 bg-white">
 
             {children}
 

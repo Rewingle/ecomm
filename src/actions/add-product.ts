@@ -19,10 +19,10 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
         image: product.image,
         stock: _stock,
         sizes: product.sizes,
+        featured: false,
         isActive: true
     };
-    console.log('STOCK' + _stock)
-    console.log('SKU' + _sku)
+
     console.log(newProduct)
     const validatedFields = ProductSchema.safeParse(newProduct);
 
@@ -42,7 +42,9 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
             image,
             stock,
             sizes,
-            isActive } = validatedFields.data;
+            featured,
+            isActive,
+            } = validatedFields.data;
 
         const addProductResult = await db.product.create({
             data: {
@@ -55,6 +57,7 @@ export const addProduct = async (product: z.infer<typeof addProductSchema>) => {
                 image,
                 stock,
                 sizes,
+                featured,
                 isActive,
             }
         });

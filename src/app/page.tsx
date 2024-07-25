@@ -1,20 +1,22 @@
 import { Poppins } from "next/font/google";
-
-import { LoginButton } from "@/components/auth/login-button";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { categories } from "./types";
 import { Card } from "@/components/ui/card";
+import ProductCard from "@/components/product-card";
+import { getFeaturedProducts } from "@/actions/get-products";
+import { getAllProducts } from "@/actions/get-products";
 
 const font = Poppins({
   subsets: ["latin"],
   weight: ["600"],
 });
 
-export default function Home() {
+export default async function Home() {
+
+  const featuredProducts = await getFeaturedProducts();
+  const allProducts = await getAllProducts();
   return (
     <div>
-      <div className="bg-red-300 w-full h-32">
+      <div className="bg-slate-600 w-full h-32">
 
       </div>
       <br />
@@ -27,10 +29,23 @@ export default function Home() {
           </div>
         </div>
       </Card>
-      <LoginButton>
-        <Button>LOGIN</Button>
-      </LoginButton>
+      <br />
+      <div className="grid grid-cols-4 gap-4">
+        {featuredProducts.map((product) => (
+          <ProductCard key={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
+        ))}
+      </div>
+      <br />
+      <div className="w-full h-16 bg-slate-600"></div>
+      <br />
+      <div className="grid grid-cols-4 gap-4">
 
+        {
+          allProducts.map((product) => (
+            <ProductCard key={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
+          ))
+        }
+      </div>
     </div>
   );
 }
