@@ -1,12 +1,10 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { admin } from "@/actions/admin";
 import Link from "next/link";
-import { RoleGate } from "@/components/auth/role-gate";
-import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { z } from 'zod'
+import Image from 'next/image';
+import { FaStar, FaRegStar } from "react-icons/fa6";
+import { updateProductFeatured } from '@/actions/update-product';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -19,7 +17,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Trash2, CircleMinus } from "lucide-react"
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Trash2, CircleMinus, Star } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -30,7 +28,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-
 import {
     Table,
     TableBody,
@@ -40,12 +37,10 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ProductSchema } from '@/schemas';
-import { addProduct } from '@/actions/add-product';
-import getProduct from '@/actions/get-products';
+import { getAllProducts } from '@/actions/get-products';
+import { toast } from 'sonner';
 
-
-export type Product = {
+type Product = {
     id: string
     sku: string
     name: string
@@ -55,8 +50,8 @@ export type Product = {
     price: number
     image: string
     stock: number
-    sizes: { name: string; stock: number }[]
-
+    sizes: { name: string; stock: number }[],
+    featured: boolean
 }
 
 const columns: ColumnDef<Product>[] = [
@@ -107,13 +102,15 @@ const columns: ColumnDef<Product>[] = [
         accessorKey: "price",
         header: ({ column }) => {
             return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Price
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                <div className='size-full text-center'>
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Price
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                </div>
             )
         },
         cell: ({ row }) => {
@@ -131,10 +128,12 @@ const columns: ColumnDef<Product>[] = [
     },
     {
         accessorKey: "image",
-        header: () => <div className="text-right">Image</div>,
+        header: () => <div className="text-center">Image</div>,
         cell: ({ row }) => {
 
-            return <img className="size-8 flex items-center justify-center" src={(row.getValue("image"))}></img>
+            return <div className=" flex items-center justify-center">
+                <Image alt='product-small-image' width={32} height={32} src={(row.getValue("image"))} />
+            </div>
         },
     },
     {
@@ -154,6 +153,49 @@ const columns: ColumnDef<Product>[] = [
         cell: ({ row }) => {
 
             return <div className="lowercase text-center">{row.getValue("stock")}</div>
+        },
+    },
+    {
+        id: "actions",
+        accessorKey: "Featured",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const productId = row.original.id
+            console.log('PRODUCCTT IDDD', productId)
+            const [isFeatured, setIsFeatured] = useState<boolean>(row.original.featured)
+            console.log('FEATURED', isFeatured)
+            /* const [productId, setProductId] = useState<string>(row.getValue("id")) */
+            return (
+                <div className='flex items-center justify-center hover:cursor-pointer'>
+                    {isFeatured ?
+                        <FaStar className='w-5 h-5 mr-2' onClick={() => {
+                            updateProductFeatured(productId, false).then((data) => {
+                                console.log(data)
+                                if (data.success) {
+                                    toast.success(row.original.name + ' removed from featured')
+                                    setIsFeatured(false)
+                                }
+                            }).catch((error) => {
+                                toast.error('Error updating product featured field:', error)
+                                console.log(error)
+                            })
+                        }}
+                        />
+                        :
+                        <FaRegStar className='w-5 h-5 mr-2' onClick={() => {
+                            updateProductFeatured(productId, true).then((data) => {
+                                console.log(data)
+                                if (data.success) {
+                                    toast.success(row.original.name + ' added to featured')
+                                    setIsFeatured(true)
+                                }
+                            }).catch((error) => {
+                                toast.error('Error updating product featured field:', error)
+                                console.log(error)
+                            })
+                        }} />}
+                </div>
+            )
         },
     },
     {
@@ -200,7 +242,7 @@ const ProductsDashboard = () => {
 
     useEffect(() => {
         const getProducts = async () => {
-            await getProduct(0).then((data) => {
+            await getAllProducts().then((data) => {
                 console.log(data)
                 setProducts(data)
             })
@@ -229,7 +271,7 @@ const ProductsDashboard = () => {
     })
 
     return (
-        <div>
+        <div className='w-4/5'>
             <Link href={'/admin/addproduct'}> <Button>ADD PRODUCT</Button> </Link>
             <div className="flex items-center py-4">
                 <Input
@@ -341,7 +383,7 @@ const ProductsDashboard = () => {
                     </Button>
                 </div>
             </div>
-
+            <div>{columnFilters.toString()}</div>
         </div>
     )
 }

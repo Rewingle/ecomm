@@ -1,3 +1,5 @@
 refactor "or enums in schema product category"
 
 define types for navbar user and role props
+
+define a return type for update-products

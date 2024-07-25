@@ -44,19 +44,8 @@ export const colors = [
     {name: "Mixed", sku: "MIX"},
 ] as const
 
-/* export const colorNames = [
-    "🖤 Black",
-    "⚪️ White",
-    "❤️ Red",
-    "💙 Blue",
-    "💚 Green",
-    "💛 Yellow",
-    "🧡 Orange",
-    "💜 Purple",
-    "💗 Pink",
-    "🟤 Brown",
-    "🔘 Grey",
-    "🟫 Beige",
-    "🌈 Mixed",
-] as const
- */
+export const actionResponseType = ()=>{
+    return new Promise<{success: boolean}>((resolve)=>{
+
+    })
+}
