@@ -14,6 +14,7 @@ export default async function Home() {
 
   const featuredProducts = await getFeaturedProducts();
   const allProducts = await getAllProducts();
+  console.log(allProducts)
   return (
     <div>
       <div className="bg-slate-600 w-full h-32">

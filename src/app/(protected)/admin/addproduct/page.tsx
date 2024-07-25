@@ -52,7 +52,7 @@ const AddProduct = (props: Props) => {
       category: categories[0].name,
       color: colors[0].name,
       price: 0,
-      image: "https://dummyjson.com/icon/abce23/32",
+      image: "https://dummyjson.com/icon/changeHere/128",
    
       sizes: [{
         name: "XS", stock: 0,

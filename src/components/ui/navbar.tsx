@@ -74,7 +74,6 @@ const Navbar: React.FC<NavbarProps> = () => {
                     </div>
                     <div className='hidden md:flex size-full justify-between items-center px-8 font-semibold col-span-8'>
                         <Link href={'/'}><span className='hover:cursor-pointer h-full w-full'>Home</span></Link>
-                        <Link href={'/products'}><span className='hover:cursor-pointer h-full w-full'>Products</span></Link>
                         <Link href={'/test'}><span className='hover:cursor-pointer h-full w-full'>Test</span></Link>
 
                     </div>
