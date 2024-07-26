@@ -16,15 +16,32 @@ export const getFeaturedProducts = async () => {
         }
     });
     return getFeaturedProductsResult;
-
+    //2-5
 }
-export const getAllProducts = async () => {
-    const getProductResult = await db.product.findMany({
-        where: {
-            isActive: true
-        }
-    });
-    return getProductResult;
+export const getAllProducts = async (pagination: [start: number, end: number]) => {
+    //RETURN ONLY PRODUCTS BETWEEN START(INCLUSIVE) AND END(EXCLUSIVE)
+    if (pagination[0] < 0 || pagination[1] < -1 || pagination[1] - pagination[0] < -1) {
+        return { success: false, message: 'Invalid pagination' };
+    }
+    //RETURN ALL PRODUCTS
+    if (pagination[0] == 0 && pagination[1] == -1) {
+        const getAllProductsResult = await db.product.findMany({
+            where: {
+                isActive: true
+            }
+        });
+        return { success: true, message: 'Products found', data: getAllProductsResult };
+    } else { 
+    //RETURN PRODUCTS BETWEEN START AND END
+        const getProductResult = await db.product.findMany({
+            where: {
+                isActive: true
+            },
+            skip: pagination[0],
+            take: pagination[1] - pagination[0]
+        });
+        return { success: true, message: 'Products found', data: getProductResult };
+    }
 }
 export const getProduct = async (productId: string): Promise<actionResponse> => {
 

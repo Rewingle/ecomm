@@ -47,5 +47,5 @@ export const colors = [
 export type actionResponse = {
     success: boolean
     message: string,
-    data?: any
+    data?: []
 }

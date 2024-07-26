@@ -39,6 +39,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { getAllProducts } from '@/actions/get-products';
 import { toast } from 'sonner';
+import { actionResponse } from '@/app/types';
 
 type Product = {
     id: string
@@ -51,7 +52,8 @@ type Product = {
     image: string
     stock: number
     sizes: { name: string; stock: number }[],
-    featured: boolean
+    featured: boolean,
+    isActive: boolean
 }
 
 const columns: ColumnDef<Product>[] = [
@@ -240,14 +242,38 @@ const ProductsDashboard = () => {
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
 
-    const [Products, setProducts] = useState<any[]>([])
+    const [Products, setProducts] = useState<Product[]>([])
 
     useEffect(() => {
         const getProducts = async () => {
-            await getAllProducts().then((data) => {
-                console.log(data)
-                setProducts(data)
+            getAllProducts([0, -1]).then((res) => {
+                if (!res.success) {
+                    console.log(res.message)
+                } if (
+                    res.data
+                ) {
+                    setProducts({...res.data, sizes: JSON.parse(res.data.sizes)})
+                }
             })
+            /*    type Product = {
+                   id: string
+                   sku: string
+                   name: string
+                   description: string
+                   category: string
+                   color: string
+                   price: number
+                   image: string
+                   stock: number
+                   sizes: { name: string; stock: number }[],
+                   featured: boolean
+               } */
+
+            /*  if (!getAllProductsResult.success) {
+                 console.log(getAllProductsResult.message)
+             }
+             setProducts(getAllProductsResult.data) */
+            /*   return getAllProductsResult.data */
         }
         getProducts()
     }, [])

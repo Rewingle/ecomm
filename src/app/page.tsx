@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import ProductCard from "@/components/product-card";
 import { getFeaturedProducts } from "@/actions/get-products";
 import { getAllProducts } from "@/actions/get-products";
+import { toast } from "sonner";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -13,8 +14,11 @@ const font = Poppins({
 export default async function Home() {
 
   const featuredProducts = await getFeaturedProducts();
-  const allProducts = await getAllProducts();
-  console.log(allProducts)
+  const getAllProductsResult = await getAllProducts([0,-1]);
+  if(!getAllProductsResult.success){
+    console.log(getAllProductsResult.message)
+  }
+  const allProducts = getAllProductsResult.data;
   return (
     <div>
       <div className="bg-slate-600 w-full h-32">
@@ -42,7 +46,7 @@ export default async function Home() {
       <div className="grid grid-cols-4 gap-4">
 
         {
-          allProducts.map((product) => (
+          allProducts && allProducts.map((product) => (
             <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
           ))
         }
