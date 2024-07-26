@@ -44,8 +44,8 @@ export const colors = [
     {name: "Mixed", sku: "MIX"},
 ] as const
 
-export const actionResponseType = ()=>{
-    return new Promise<{success: boolean}>((resolve)=>{
-
-    })
+export type actionResponse = {
+    success: boolean
+    message: string,
+    data?: any
 }

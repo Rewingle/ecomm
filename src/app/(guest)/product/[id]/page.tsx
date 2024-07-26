@@ -3,22 +3,17 @@ import { getProduct } from '@/actions/get-products'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ShoppingCart } from 'lucide-react';
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useSearchParams } from 'next/navigation';
+import Heart from '@/components/heart';
+import Link from 'next/link';
 
 type Props = {}
 
-const Product = async ({ params }: { params: { id: string } }) => {
+const Product = async ({ params }: { params: { id: string, favorite?: string } }) => {
 
-    const product = await getProduct(params.id)
-    const searchParams = useSearchParams()
-    const createQueryString = (key: string, value: number | string) => {
-        const params = new URLSearchParams(searchParams)
-        params.set(key, String(value))
-    
-        return String(params)
-      }
-
+    const result = await getProduct(params.id)
+    const product = result.data
+    const isFavorite:boolean = Boolean(params.favorite)
     return (
         <div className="grid grid-rows-12 grid-cols-12 gap-x-20 h-full">
             <div className="row-span-12 col-span-6 bg-white h-full">
@@ -43,18 +38,16 @@ const Product = async ({ params }: { params: { id: string } }) => {
                         ))}
                     </div>
                 </div>
-
+            {params?.favorite?.toString()}
             </div>
             <div className="row-span-4 col-span-6 pr-24">
                 <div>{product ? product.description : <Skeleton className="h-24 w-[700px]" />}</div>
             </div>
-            <div className='flex items-center justify-end row-span-2 col-span-6 size-full'>
-                <div className='p-2 rounded-full hover:cursor-pointer hover:bg-pink-50 mr-4 flex items-center justify-center'>
-                    <FaRegHeart className='size-8 text-red-500' />
-                </div>
+            {product ? <div className='flex items-center justify-end row-span-2 col-span-6 size-full'>
+                <Heart productId={product.id} isFavorite={isFavorite}/>
 
                 <Button className='px-6 py-6 flex items-center'><ShoppingCart className='mr-4' /> ADD TO CART</Button>
-            </div>
+            </div> : null}
         </div>
     )
 }

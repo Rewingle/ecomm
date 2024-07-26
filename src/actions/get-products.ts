@@ -1,8 +1,9 @@
 "use server"
 import * as z from "zod";
-import { ProductSchema } from "@/schemas";
-//import { addProductService } from "@/services/product";
+import { ProductSchema } from "@/schemas"
+import mongoose, { isValidObjectId } from 'mongoose'
 import { db } from "@/lib/db";
+import { actionResponse } from "@/app/types";
 
 export const getFeaturedProducts = async () => {
 
@@ -18,7 +19,6 @@ export const getFeaturedProducts = async () => {
 
 }
 export const getAllProducts = async () => {
-
     const getProductResult = await db.product.findMany({
         where: {
             isActive: true
@@ -26,11 +26,16 @@ export const getAllProducts = async () => {
     });
     return getProductResult;
 }
-export const getProduct = async (productId: string) => {
+export const getProduct = async (productId: string): Promise<actionResponse> => {
+
+    if (!mongoose.isValidObjectId(productId)) {
+        return { success: false, message: 'Invalid product id' };
+    }
+
     const getProductResult = await db.product.findUnique({
         where: {
             id: productId
         }
     });
-    return getProductResult;
+    return { success: true, message: 'Product found', data: JSON.parse(JSON.stringify(getProductResult)) };
 }
