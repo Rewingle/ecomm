@@ -17,7 +17,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Trash2, CircleMinus, Star } from "lucide-react"
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Trash2, CircleMinus } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -39,7 +39,6 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { getAllProducts } from '@/actions/get-products';
 import { toast } from 'sonner';
-import { actionResponse } from '@/app/types';
 
 type Product = {
     id: string
