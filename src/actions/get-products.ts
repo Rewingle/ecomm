@@ -18,7 +18,7 @@ export const getFeaturedProducts = async () => {
     return getFeaturedProductsResult;
     //2-5
 }
-export const getAllProducts = async (pagination: [start: number, end: number]) => {
+export const getAllProducts = async (pagination: [start: number, end: number]):Promise<actionResponse> => {
     //RETURN ONLY PRODUCTS BETWEEN START(INCLUSIVE) AND END(EXCLUSIVE)
     if (pagination[0] < 0 || pagination[1] < -1 || pagination[1] - pagination[0] < -1) {
         return { success: false, message: 'Invalid pagination' };

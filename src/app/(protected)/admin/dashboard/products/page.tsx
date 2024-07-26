@@ -242,45 +242,28 @@ const ProductsDashboard = () => {
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
 
-    const [Products, setProducts] = useState<Product[]>([])
+    const [products, setProducts] = useState<any[]>([])
 
     useEffect(() => {
         const getProducts = async () => {
             getAllProducts([0, -1]).then((res) => {
                 if (!res.success) {
                     console.log(res.message)
-                } if (
-                    res.data
-                ) {
-                    setProducts({...res.data, sizes: JSON.parse(res.data.sizes)})
+                }
+                if (res.data) {
+                    setProducts(res.data)
+                } else {
+                    console.log("Unexpected Error")
                 }
             })
-            /*    type Product = {
-                   id: string
-                   sku: string
-                   name: string
-                   description: string
-                   category: string
-                   color: string
-                   price: number
-                   image: string
-                   stock: number
-                   sizes: { name: string; stock: number }[],
-                   featured: boolean
-               } */
 
-            /*  if (!getAllProductsResult.success) {
-                 console.log(getAllProductsResult.message)
-             }
-             setProducts(getAllProductsResult.data) */
-            /*   return getAllProductsResult.data */
         }
         getProducts()
     }, [])
 
 
     const table = useReactTable({
-        data: Products, // Provide a value for the 'data' property
+        data: products, // Provide a value for the 'data' property
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
