@@ -79,7 +79,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     </div>
 
                 </div>
-                <div className='hidden md:flex h-full w-3/5 justify-end px-6'>
+                <div className='hidden md:flex md:items-center h-full w-3/5 justify-end px-6'>
                     {user&&role ? <UserButton user={user} role={role} /> : <LoginButton><Button>LOGIN</Button></LoginButton>}
                 </div>
                 <div className='flex md:hidden h-full w-3/5 justify-end'>
