@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useOptimistic, useState } from 'react'
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from 'next/image';
@@ -53,6 +53,14 @@ type Product = {
     sizes: { name: string; stock: number }[],
     featured: boolean,
     isActive: boolean
+}
+
+function changeFeaturedStatus(productId: string, status: boolean) {
+    const [optimisticFeatured, setOptimisticFeatured] = useOptimistic<boolean[]>([true, false, true, false, true, false, false, false, false, false]);
+
+    const handleClick = () => {
+
+    }
 }
 
 const columns: ColumnDef<Product>[] = [
@@ -162,39 +170,47 @@ const columns: ColumnDef<Product>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const productId = row.original.id
-            console.log('PRODUCCTT IDDD', productId)
-            const [isFeatured, setIsFeatured] = useState<boolean>(row.original.featured)
-            console.log('FEATURED', isFeatured)
-            /* const [productId, setProductId] = useState<string>(row.getValue("id")) */
+            const isFeatured = row.original.featured
+            /*const [isFeatured, setIsFeatured] = useState<boolean>(row.original.featured) */
+            const [features, setFeatures] = useState<boolean>(isFeatured)
+            const [optimisticFeature, setOptimisticFeature] = useOptimistic(
+                features,
+                // updateFn
+                (currentState, optimisticValue) => {
+                    return !currentState
+                }
+            );
+
             return (
                 <div className='flex items-center justify-center hover:cursor-pointer'>
-                    {isFeatured ?
-                        <FaStar className='w-5 h-5 mr-2' onClick={() => {
-                            updateProductFeatured(productId, false).then((data) => {
-                                console.log(data)
-                                if (data.success) {
-                                    toast.success(row.original.name + ' removed from featured')
-                                    setIsFeatured(false)
-                                }
-                            }).catch((error) => {
-                                toast.error('Error updating product featured field:', error)
-                                console.log(error)
-                            })
-                        }}
-                        />
+                    {optimisticFeature ?
+                        //IF FEATURED
+                        (<><FaStar className='w-5 h-5 mr-2' onClick={async () => {
+                            //I EXPECT THIS TO BE 
+                            setOptimisticFeature(!features)
+                            //THEN I DO API REQUEST
+                            const updatedFeature = await updateProductFeatured(productId, false)
+                            console.log(updatedFeature)
+                            if (updatedFeature.success) {
+                                toast.success(row.original.name + ' removed from featured')
+                                setFeatures(!features);
+                            }
+
+                        }} />{row.index}</>
+                        )
                         :
-                        <FaRegStar className='w-5 h-5 mr-2' onClick={() => {
-                            updateProductFeatured(productId, true).then((data) => {
-                                console.log(data)
-                                if (data.success) {
-                                    toast.success(row.original.name + ' added to featured')
-                                    setIsFeatured(true)
-                                }
-                            }).catch((error) => {
-                                toast.error('Error updating product featured field:', error)
-                                console.log(error)
-                            })
-                        }} />}
+                        (<><FaRegStar className='w-5 h-5 mr-2' onClick={async () => {
+                            setOptimisticFeature(!features)
+                            const updatedFeature = await updateProductFeatured(productId, true)
+                            console.log(updatedFeature)
+                            if (updatedFeature.success) {
+                                toast.success(row.original.name + ' added to featured')
+                                setFeatures(!features);
+                            }
+
+                        }} />{row.index}</>
+                        )
+                    }
                 </div>
             )
         },
@@ -234,9 +250,7 @@ const columns: ColumnDef<Product>[] = [
 
 const ProductsDashboard = () => {
     const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
@@ -279,6 +293,7 @@ const ProductsDashboard = () => {
             rowSelection,
         },
     })
+
 
     return (
         <div className='w-4/5'>
@@ -394,6 +409,7 @@ const ProductsDashboard = () => {
                 </div>
             </div>
             <div>{columnFilters.toString()}</div>
+
         </div>
     )
 }
