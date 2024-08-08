@@ -1,24 +1,20 @@
 "use server"
 import { PrismaClient } from '@prisma/client';
+import { actionResponseType } from '@/app/types';
+import actionResponse from '@/lib/Responses/actionResponse';
 
 const prisma = new PrismaClient();
 
-type Response = {
-    string: string;
-}
-
-export async function updateProductFeatured(productId: string, featured: boolean): Promise<any> {
+export async function updateProductFeatured(productId: string, featured: boolean): Promise<actionResponseType> {
     try {
         await prisma.product.update({
             where: { id: productId },
             data: { featured: featured },
         });
 
-        console.log('Product featured field updated successfully');
-        return {success: true, message: 'Product featured field updated successfully'}
+        return actionResponse({ success: true, message: 'Product featured field updated successfully', data: null });
     } catch (error) {
-        console.error('Error updating product featured field:', error);
-        return {success: false, message: error}
+        return actionResponse({ success: false, message: error as any as string, data: null });
     }
 }
 

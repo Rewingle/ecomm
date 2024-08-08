@@ -14,11 +14,11 @@ const font = Poppins({
 export default async function Home() {
 
   const featuredProducts = await getFeaturedProducts();
-  const getAllProductsResult = await getAllProducts([0,-1]);
-  if(!getAllProductsResult.success){
-    console.log(getAllProductsResult.message)
+  const allProducts= await getAllProducts([0,-1]);
+  if(!allProducts.success){
+    console.log(allProducts.message)
   }
-  const allProducts = getAllProductsResult.data;
+
   return (
     <div>
       <div className="bg-slate-600 w-full h-32">
@@ -36,7 +36,7 @@ export default async function Home() {
       </Card>
       <br />
       <div className="grid grid-cols-4 gap-4">
-        {featuredProducts.map((product) => (
+        {featuredProducts.data.map((product:any) => (
           <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
         ))}
       </div>
@@ -46,7 +46,7 @@ export default async function Home() {
       <div className="grid grid-cols-4 gap-4">
 
         {
-          allProducts && allProducts.map((product) => (
+          allProducts && allProducts.data?.map((product:any) => (
             <ProductCard key={product.id} id={product.id} name={product.name} price={product.price} image={product.image} rating={4.5} />
           ))
         }

@@ -3,9 +3,10 @@ import * as z from "zod";
 import { ProductSchema } from "@/schemas"
 import mongoose, { isValidObjectId } from 'mongoose'
 import { db } from "@/lib/db";
-import { actionResponse } from "@/app/types";
+import { actionResponseType } from "@/app/types";
+import actionResponse from "@/lib/Responses/actionResponse";
 
-export const getFeaturedProducts = async () => {
+export const getFeaturedProducts = async ():Promise<actionResponseType> => {
 
     const getFeaturedProductsResult = await db.product.findMany({
         where: {
@@ -15,10 +16,10 @@ export const getFeaturedProducts = async () => {
             ]
         }
     });
-    return getFeaturedProductsResult;
+    return actionResponse({ success: true, message: 'Featured products found', data: getFeaturedProductsResult });
     //2-5
 }
-export const getAllProducts = async (pagination: [start: number, end: number]):Promise<actionResponse> => {
+export const getAllProducts = async (pagination: [start: number, end: number]):Promise<actionResponseType> => {
     //RETURN ONLY PRODUCTS BETWEEN START(INCLUSIVE) AND END(EXCLUSIVE)
     if (pagination[0] < 0 || pagination[1] < -1 || pagination[1] - pagination[0] < -1) {
         return { success: false, message: 'Invalid pagination' };
@@ -30,7 +31,7 @@ export const getAllProducts = async (pagination: [start: number, end: number]):P
                 isActive: true
             }
         });
-        return { success: true, message: 'Products found', data: getAllProductsResult };
+        return actionResponse({ success: true, message: 'Products found', data: getAllProductsResult });
     } else { 
     //RETURN PRODUCTS BETWEEN START AND END
         const getProductResult = await db.product.findMany({
@@ -40,10 +41,10 @@ export const getAllProducts = async (pagination: [start: number, end: number]):P
             skip: pagination[0],
             take: pagination[1] - pagination[0]
         });
-        return { success: true, message: 'Products found', data: getProductResult };
+        return actionResponse({ success: true, message: 'Products found', data: getProductResult });
     }
 }
-export const getProduct = async (productId: string): Promise<actionResponse> => {
+export const getProduct = async (productId: string): Promise<actionResponseType> => {
 
     if (!mongoose.isValidObjectId(productId)) {
         return { success: false, message: 'Invalid product id' };
@@ -54,5 +55,5 @@ export const getProduct = async (productId: string): Promise<actionResponse> => 
             id: productId
         }
     });
-    return { success: true, message: 'Product found', data: JSON.parse(JSON.stringify(getProductResult)) };
+    return actionResponse({ success: true, message: 'Product found', data: getProductResult });
 }

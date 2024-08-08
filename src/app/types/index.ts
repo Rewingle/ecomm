@@ -44,8 +44,8 @@ export const colors = [
     {name: "Mixed", sku: "MIX"},
 ] as const
 
-export type actionResponse = {
+export type actionResponseType = {
     success: boolean
     message: string,
-    data?: any[]
+    data?: any | null
 }
